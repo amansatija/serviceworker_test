@@ -44,7 +44,16 @@ echo '<h3>Live Output</h3>
   <div>
     <button id="list-contents">List Current Cache Contents</button>
   </div>
+  
   <ul id="contents"></ul>
+  <div>
+    <button id="make-fetch-call">Make a fetch call to local web service</button>
+  </div>
+  
+  <div id = "fetch-call-response">
+  <a >Response:</a>
+  <div id="fetch-call-response-value"></div>
+  </div>
 </div>
 </div>
   <div id="status"></div>

@@ -1,11 +1,15 @@
+var makeFetchCallToLocalWebService = function (){
 
-$.get( "http://localhost/serviceworker_test/test_service.php", function( data ) {
-//  console.log('loaded response==='+data);
-  
+  $.get( "http://localhost/serviceworker_test/test_service.php", function( data ) {
+     document.querySelector('#fetch-call-response-value').innerHTML = JSON.stringify(data);
+  //  console.log('loaded response==='+data);
 });
+  
+}
 
 
 
+///retrieve and post messages to service worker and execute commands from service worker ...!!!!!
 
 function showCommands() {
   document.querySelector('#add').addEventListener('click', function() {
@@ -31,22 +35,29 @@ function showCommands() {
   document.querySelector('#list-contents').addEventListener('click', function() {
     sendMessage({command: 'keys'})
       .then(function(data) {
-        var contentsElement = document.querySelector('#contents');
-        // Clear out the existing items from the list.
-        while (contentsElement.firstChild) {
-          contentsElement.removeChild(contentsElement.firstChild);
-        }
+      var contentsElement = document.querySelector('#contents');
+      // Clear out the existing items from the list.
+      while (contentsElement.firstChild) {
+        contentsElement.removeChild(contentsElement.firstChild);
+      }
 
-        // Add each cached URL to the list, one by one.
-        data.urls.forEach(function(url) {
-          var liElement = document.createElement('li');
-          liElement.textContent = url;
-          contentsElement.appendChild(liElement);
-        });
-      }).catch(ChromeSamples.setStatus); // If the promise rejects, show the error.
+      // Add each cached URL to the list, one by one.
+      data.urls.forEach(function(url) {
+        var liElement = document.createElement('li');
+        liElement.textContent = url;
+        contentsElement.appendChild(liElement);
+      });
+    }).catch(ChromeSamples.setStatus); // If the promise rejects, show the error.
   });
 
   document.querySelector('#commands').style.display = 'block';
+
+  document.querySelector('#make-fetch-call').addEventListener('click', function() {
+    
+     makeFetchCallToLocalWebService();
+    
+  });
+
 }
 
 function sendMessage(message) {
@@ -82,16 +93,15 @@ if ('serviceWorker' in navigator) {
   });
 
   navigator.serviceWorker.register('worker.js')
-    // Wait until the service worker is active.
+  // Wait until the service worker is active.
     .then(navigator.serviceWorker.ready)
-    // ...and then show the interface for the commands once it's ready.
+  // ...and then show the interface for the commands once it's ready.
     .then(showCommands)
     .catch(function(error) {
-      // Something went wrong during registration. The service-worker.js file
-      // might be unavailable or contain a syntax error.
-      ChromeSamples.setStatus(error);
-    });
+    // Something went wrong during registration. The service-worker.js file
+    // might be unavailable or contain a syntax error.
+    ChromeSamples.setStatus(error);
+  });
 } else {
   ChromeSamples.setStatus('Service workers are not supported in the current browser.');
 }
- 
