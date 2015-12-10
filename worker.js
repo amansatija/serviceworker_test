@@ -17,6 +17,7 @@ var currentCacheNames = [
 var filesToBeAdded = [
   "app.js"
 ];
+
 // A new ServiceWorker has been registered
 self.addEventListener("install", function (event) {
   event.waitUntil(
@@ -26,6 +27,7 @@ self.addEventListener("install", function (event) {
     })
   );
 });
+
 // A new ServiceWorker is now active
 self.addEventListener("activate", function (event) {
   // Delete all caches that aren't named in CURRENT_CACHES.
@@ -123,8 +125,6 @@ self.addEventListener('message', function(event) {
     });
   });
 });
-
-
 
 // The page has made a request
 self.addEventListener("fetch", function (event) {
